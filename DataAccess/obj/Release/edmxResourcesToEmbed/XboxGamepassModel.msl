@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="XboxGamePassModelStoreContainer" CdmEntityContainer="XboxGamePassEntities">
+    <EntitySetMapping Name="Auditorias">
+      <EntityTypeMapping TypeName="XboxGamePassModel.Auditoria">
+        <MappingFragment StoreEntitySet="Auditoria">
+          <ScalarProperty Name="Auditoria_ID" ColumnName="Auditoria_ID" />
+          <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="TablaAfectada" ColumnName="TablaAfectada" />
+          <ScalarProperty Name="Operacion" ColumnName="Operacion" />
+          <ScalarProperty Name="ID_Modificado" ColumnName="ID_Modificado" />
+          <ScalarProperty Name="DatoAntiguo" ColumnName="DatoAntiguo" />
+          <ScalarProperty Name="DatoNuevo" ColumnName="DatoNuevo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Clientes">
+      <EntityTypeMapping TypeName="XboxGamePassModel.Cliente">
+        <MappingFragment StoreEntitySet="Cliente">
+          <ScalarProperty Name="Cli_Cedula" ColumnName="Cli_Cedula" />
+          <ScalarProperty Name="Cli_Nombre" ColumnName="Cli_Nombre" />
+          <ScalarProperty Name="Cli_Apellido" ColumnName="Cli_Apellido" />
+          <ScalarProperty Name="Cli_BirthDate" ColumnName="Cli_BirthDate" />
+          <ScalarProperty Name="Cli_Pais" ColumnName="Cli_Pais" />
+          <ScalarProperty Name="Cli_Email" ColumnName="Cli_Email" />
+          <ScalarProperty Name="Cli_LogicalDelete" ColumnName="Cli_LogicalDelete" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pagoes">
+      <EntityTypeMapping TypeName="XboxGamePassModel.Pago">
+        <MappingFragment StoreEntitySet="Pago">
+          <ScalarProperty Name="Pago_ID" ColumnName="Pago_ID" />
+          <ScalarProperty Name="Pago_Codigo" ColumnName="Pago_Codigo" />
+          <ScalarProperty Name="Cli_Cedula" ColumnName="Cli_Cedula" />
+          <ScalarProperty Name="Sus_ID" ColumnName="Sus_ID" />
+          <ScalarProperty Name="Pago_Monto" ColumnName="Pago_Monto" />
+          <ScalarProperty Name="Pago_Fecha" ColumnName="Pago_Fecha" />
+          <ScalarProperty Name="Pago_Estado" ColumnName="Pago_Estado" />
+          <ScalarProperty Name="Pago_LogicalDelete" ColumnName="Pago_LogicalDelete" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Plans">
+      <EntityTypeMapping TypeName="XboxGamePassModel.Plan">
+        <MappingFragment StoreEntitySet="Plan">
+          <ScalarProperty Name="Plan_ID" ColumnName="Plan_ID" />
+          <ScalarProperty Name="Plan_Nombre" ColumnName="Plan_Nombre" />
+          <ScalarProperty Name="Plan_Duracion" ColumnName="Plan_Duracion" />
+          <ScalarProperty Name="Plan_Precio" ColumnName="Plan_Precio" />
+          <ScalarProperty Name="Plan_Plataforma" ColumnName="Plan_Plataforma" />
+          <ScalarProperty Name="Plan_LogicalDelete" ColumnName="Plan_LogicalDelete" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Suscripcions">
+      <EntityTypeMapping TypeName="XboxGamePassModel.Suscripcion">
+        <MappingFragment StoreEntitySet="Suscripcion">
+          <ScalarProperty Name="Sus_ID" ColumnName="Sus_ID" />
+          <ScalarProperty Name="Plan_ID" ColumnName="Plan_ID" />
+          <ScalarProperty Name="Sus_StartDate" ColumnName="Sus_StartDate" />
+          <ScalarProperty Name="Sus_EndDate" ColumnName="Sus_EndDate" />
+          <ScalarProperty Name="Sus_Estado" ColumnName="Sus_Estado" />
+          <ScalarProperty Name="Sus_RenovacionAuto" ColumnName="Sus_RenovacionAuto" />
+          <ScalarProperty Name="Sus_LogicalDelete" ColumnName="Sus_LogicalDelete" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SPClientesConSuscripcionActivaInactiva" FunctionName="XboxGamePassModel.Store.SPClientesConSuscripcionActivaInactiva">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="XboxGamePassModel.SPClientesConSuscripcionActivaInactiva_Result">
+          <ScalarProperty Name="ClientesConSuscripcionActiva" ColumnName="ClientesConSuscripcionActiva" />
+          <ScalarProperty Name="ClientesSinSuscripcionActiva" ColumnName="ClientesSinSuscripcionActiva" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SPObtenerClientesConRenovacionAutomatica" FunctionName="XboxGamePassModel.Store.SPObtenerClientesConRenovacionAutomatica">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerClientesConRenovacionAutomatica_Result">
+          <ScalarProperty Name="NumeroClientes" ColumnName="NumeroClientes" />
+          <ScalarProperty Name="RenovacionAutomatica" ColumnName="RenovacionAutomatica" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SPObtenerClientesPorPaisYPlan" FunctionName="XboxGamePassModel.Store.SPObtenerClientesPorPaisYPlan">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerClientesPorPaisYPlan_Result">
+          <ScalarProperty Name="Pais" ColumnName="Pais" />
+          <ScalarProperty Name="NumeroClientes" ColumnName="NumeroClientes" />
+          <ScalarProperty Name="NombrePlan" ColumnName="NombrePlan" />
+          <ScalarProperty Name="DuracionPlan" ColumnName="DuracionPlan" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SPObtenerClientesPorPlataforma" FunctionName="XboxGamePassModel.Store.SPObtenerClientesPorPlataforma">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerClientesPorPlataforma_Result">
+          <ScalarProperty Name="Plataforma" ColumnName="Plataforma" />
+          <ScalarProperty Name="NumeroClientes" ColumnName="NumeroClientes" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SPObtenerNumeroClientesPorPais" FunctionName="XboxGamePassModel.Store.SPObtenerNumeroClientesPorPais">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerNumeroClientesPorPais_Result">
+          <ScalarProperty Name="Pais" ColumnName="Pais" />
+          <ScalarProperty Name="NumeroClientes" ColumnName="NumeroClientes" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SPObtenerPagosPorPlan" FunctionName="XboxGamePassModel.Store.SPObtenerPagosPorPlan">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerPagosPorPlan_Result">
+          <ScalarProperty Name="NombrePlan" ColumnName="NombrePlan" />
+          <ScalarProperty Name="NumeroPagos" ColumnName="NumeroPagos" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

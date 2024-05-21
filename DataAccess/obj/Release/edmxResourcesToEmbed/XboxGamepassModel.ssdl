@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="XboxGamePassModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Auditoria">
+    <Key>
+      <PropertyRef Name="Auditoria_ID" />
+    </Key>
+    <Property Name="Auditoria_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Usuario" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="TablaAfectada" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Operacion" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="ID_Modificado" Type="varchar" MaxLength="10" />
+    <Property Name="DatoAntiguo" Type="nvarchar(max)" />
+    <Property Name="DatoNuevo" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Cliente">
+    <Key>
+      <PropertyRef Name="Cli_Cedula" />
+    </Key>
+    <Property Name="Cli_Cedula" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Cli_Nombre" Type="varchar" MaxLength="50" />
+    <Property Name="Cli_Apellido" Type="varchar" MaxLength="50" />
+    <Property Name="Cli_BirthDate" Type="datetime" />
+    <Property Name="Cli_Pais" Type="varchar" MaxLength="50" />
+    <Property Name="Cli_Email" Type="varchar" MaxLength="50" />
+    <Property Name="Cli_LogicalDelete" Type="bit" />
+  </EntityType>
+  <EntityType Name="Pago">
+    <Key>
+      <PropertyRef Name="Pago_ID" />
+    </Key>
+    <Property Name="Pago_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Pago_Codigo" Type="varchar" MaxLength="10" />
+    <Property Name="Cli_Cedula" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Sus_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Pago_Monto" Type="decimal" Precision="8" Scale="2" />
+    <Property Name="Pago_Fecha" Type="datetime" />
+    <Property Name="Pago_Estado" Type="varchar" MaxLength="50" />
+    <Property Name="Pago_LogicalDelete" Type="bit" />
+  </EntityType>
+  <EntityType Name="Plan">
+    <Key>
+      <PropertyRef Name="Plan_ID" />
+    </Key>
+    <Property Name="Plan_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Plan_Nombre" Type="varchar" MaxLength="50" />
+    <Property Name="Plan_Duracion" Type="varchar" MaxLength="50" />
+    <Property Name="Plan_Precio" Type="decimal" Precision="8" Scale="2" />
+    <Property Name="Plan_Plataforma" Type="varchar" MaxLength="50" />
+    <Property Name="Plan_LogicalDelete" Type="bit" />
+  </EntityType>
+  <EntityType Name="Suscripcion">
+    <Key>
+      <PropertyRef Name="Sus_ID" />
+    </Key>
+    <Property Name="Sus_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Plan_ID" Type="int" Nullable="false" />
+    <Property Name="Sus_StartDate" Type="datetime" />
+    <Property Name="Sus_EndDate" Type="datetime" />
+    <Property Name="Sus_Estado" Type="varchar" MaxLength="40" />
+    <Property Name="Sus_RenovacionAuto" Type="bit" />
+    <Property Name="Sus_LogicalDelete" Type="bit" />
+  </EntityType>
+  <Association Name="FK_Pago_Cliente">
+    <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+    <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cliente">
+        <PropertyRef Name="Cli_Cedula" />
+      </Principal>
+      <Dependent Role="Pago">
+        <PropertyRef Name="Cli_Cedula" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pago_Suscripcion">
+    <End Role="Suscripcion" Type="Self.Suscripcion" Multiplicity="1" />
+    <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suscripcion">
+        <PropertyRef Name="Sus_ID" />
+      </Principal>
+      <Dependent Role="Pago">
+        <PropertyRef Name="Sus_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Suscripcion_Plan">
+    <End Role="Plan" Type="Self.Plan" Multiplicity="1" />
+    <End Role="Suscripcion" Type="Self.Suscripcion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Plan">
+        <PropertyRef Name="Plan_ID" />
+      </Principal>
+      <Dependent Role="Suscripcion">
+        <PropertyRef Name="Plan_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="SPClientesConSuscripcionActivaInactiva" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="SPObtenerClientesConRenovacionAutomatica" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="SPObtenerClientesPorPaisYPlan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="SPObtenerClientesPorPlataforma" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="SPObtenerNumeroClientesPorPais" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="SPObtenerPagosPorPlan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="NombrePlan" Type="varchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="XboxGamePassModelStoreContainer">
+    <EntitySet Name="Auditoria" EntityType="Self.Auditoria" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Plan" EntityType="Self.Plan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Suscripcion" EntityType="Self.Suscripcion" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Pago_Cliente" Association="Self.FK_Pago_Cliente">
+      <End Role="Cliente" EntitySet="Cliente" />
+      <End Role="Pago" EntitySet="Pago" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pago_Suscripcion" Association="Self.FK_Pago_Suscripcion">
+      <End Role="Suscripcion" EntitySet="Suscripcion" />
+      <End Role="Pago" EntitySet="Pago" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Suscripcion_Plan" Association="Self.FK_Suscripcion_Plan">
+      <End Role="Plan" EntitySet="Plan" />
+      <End Role="Suscripcion" EntitySet="Suscripcion" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

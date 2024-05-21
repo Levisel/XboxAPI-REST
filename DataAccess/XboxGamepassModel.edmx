@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="XboxGamePassModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Auditoria">
+          <Key>
+            <PropertyRef Name="Auditoria_ID" />
+          </Key>
+          <Property Name="Auditoria_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Usuario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+          <Property Name="TablaAfectada" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Operacion" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ID_Modificado" Type="varchar" MaxLength="10" />
+          <Property Name="DatoAntiguo" Type="nvarchar(max)" />
+          <Property Name="DatoNuevo" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Cli_Cedula" />
+          </Key>
+          <Property Name="Cli_Cedula" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Cli_Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Cli_Apellido" Type="varchar" MaxLength="50" />
+          <Property Name="Cli_BirthDate" Type="datetime" />
+          <Property Name="Cli_Pais" Type="varchar" MaxLength="50" />
+          <Property Name="Cli_Email" Type="varchar" MaxLength="50" />
+          <Property Name="Cli_LogicalDelete" Type="bit" />
+        </EntityType>
+        <EntityType Name="Pago">
+          <Key>
+            <PropertyRef Name="Pago_ID" />
+          </Key>
+          <Property Name="Pago_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pago_Codigo" Type="varchar" MaxLength="10" />
+          <Property Name="Cli_Cedula" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Sus_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pago_Monto" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Pago_Fecha" Type="datetime" />
+          <Property Name="Pago_Estado" Type="varchar" MaxLength="50" />
+          <Property Name="Pago_LogicalDelete" Type="bit" />
+        </EntityType>
+        <EntityType Name="Plan">
+          <Key>
+            <PropertyRef Name="Plan_ID" />
+          </Key>
+          <Property Name="Plan_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Plan_Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Plan_Duracion" Type="varchar" MaxLength="50" />
+          <Property Name="Plan_Precio" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Plan_Plataforma" Type="varchar" MaxLength="50" />
+          <Property Name="Plan_LogicalDelete" Type="bit" />
+        </EntityType>
+        <EntityType Name="Suscripcion">
+          <Key>
+            <PropertyRef Name="Sus_ID" />
+          </Key>
+          <Property Name="Sus_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Plan_ID" Type="int" Nullable="false" />
+          <Property Name="Sus_StartDate" Type="datetime" />
+          <Property Name="Sus_EndDate" Type="datetime" />
+          <Property Name="Sus_Estado" Type="varchar" MaxLength="40" />
+          <Property Name="Sus_RenovacionAuto" Type="bit" />
+          <Property Name="Sus_LogicalDelete" Type="bit" />
+        </EntityType>
+        <Association Name="FK_Pago_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Cli_Cedula" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="Cli_Cedula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_Suscripcion">
+          <End Role="Suscripcion" Type="Self.Suscripcion" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suscripcion">
+              <PropertyRef Name="Sus_ID" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="Sus_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Suscripcion_Plan">
+          <End Role="Plan" Type="Self.Plan" Multiplicity="1" />
+          <End Role="Suscripcion" Type="Self.Suscripcion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plan">
+              <PropertyRef Name="Plan_ID" />
+            </Principal>
+            <Dependent Role="Suscripcion">
+              <PropertyRef Name="Plan_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SPClientesConSuscripcionActivaInactiva" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SPObtenerClientesConRenovacionAutomatica" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SPObtenerClientesPorPaisYPlan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SPObtenerClientesPorPlataforma" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SPObtenerNumeroClientesPorPais" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SPObtenerPagosPorPlan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombrePlan" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="XboxGamePassModelStoreContainer">
+          <EntitySet Name="Auditoria" EntityType="Self.Auditoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plan" EntityType="Self.Plan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Suscripcion" EntityType="Self.Suscripcion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Pago_Cliente" Association="Self.FK_Pago_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_Suscripcion" Association="Self.FK_Pago_Suscripcion">
+            <End Role="Suscripcion" EntitySet="Suscripcion" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Suscripcion_Plan" Association="Self.FK_Suscripcion_Plan">
+            <End Role="Plan" EntitySet="Plan" />
+            <End Role="Suscripcion" EntitySet="Suscripcion" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="XboxGamePassModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Auditoria">
+          <Key>
+            <PropertyRef Name="Auditoria_ID" />
+          </Key>
+          <Property Name="Auditoria_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TablaAfectada" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Operacion" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_Modificado" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DatoAntiguo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DatoNuevo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Cli_Cedula" />
+          </Key>
+          <Property Name="Cli_Cedula" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cli_Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cli_Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cli_BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="Cli_Pais" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cli_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cli_LogicalDelete" Type="Boolean" />
+          <NavigationProperty Name="Pagos" Relationship="Self.FK_Pago_Cliente" FromRole="Cliente" ToRole="Pago" />
+        </EntityType>
+        <EntityType Name="Pago">
+          <Key>
+            <PropertyRef Name="Pago_ID" />
+          </Key>
+          <Property Name="Pago_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pago_Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Cli_Cedula" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sus_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pago_Monto" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Pago_Fecha" Type="DateTime" Precision="3" />
+          <Property Name="Pago_Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pago_LogicalDelete" Type="Boolean" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_Pago_Cliente" FromRole="Pago" ToRole="Cliente" />
+          <NavigationProperty Name="Suscripcion" Relationship="Self.FK_Pago_Suscripcion" FromRole="Pago" ToRole="Suscripcion" />
+        </EntityType>
+        <EntityType Name="Plan">
+          <Key>
+            <PropertyRef Name="Plan_ID" />
+          </Key>
+          <Property Name="Plan_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Plan_Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Plan_Duracion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Plan_Precio" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Plan_Plataforma" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Plan_LogicalDelete" Type="Boolean" />
+          <NavigationProperty Name="Suscripcions" Relationship="Self.FK_Suscripcion_Plan" FromRole="Plan" ToRole="Suscripcion" />
+        </EntityType>
+        <EntityType Name="Suscripcion">
+          <Key>
+            <PropertyRef Name="Sus_ID" />
+          </Key>
+          <Property Name="Sus_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Plan_ID" Type="Int32" Nullable="false" />
+          <Property Name="Sus_StartDate" Type="DateTime" Precision="3" />
+          <Property Name="Sus_EndDate" Type="DateTime" Precision="3" />
+          <Property Name="Sus_Estado" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Sus_RenovacionAuto" Type="Boolean" />
+          <Property Name="Sus_LogicalDelete" Type="Boolean" />
+          <NavigationProperty Name="Pagos" Relationship="Self.FK_Pago_Suscripcion" FromRole="Suscripcion" ToRole="Pago" />
+          <NavigationProperty Name="Plan" Relationship="Self.FK_Suscripcion_Plan" FromRole="Suscripcion" ToRole="Plan" />
+        </EntityType>
+        <Association Name="FK_Pago_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Cli_Cedula" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="Cli_Cedula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_Suscripcion">
+          <End Role="Suscripcion" Type="Self.Suscripcion" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suscripcion">
+              <PropertyRef Name="Sus_ID" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="Sus_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Suscripcion_Plan">
+          <End Role="Plan" Type="Self.Plan" Multiplicity="1" />
+          <End Role="Suscripcion" Type="Self.Suscripcion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plan">
+              <PropertyRef Name="Plan_ID" />
+            </Principal>
+            <Dependent Role="Suscripcion">
+              <PropertyRef Name="Plan_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="XboxGamePassEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Auditorias" EntityType="Self.Auditoria" />
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="Pagoes" EntityType="Self.Pago" />
+          <EntitySet Name="Plans" EntityType="Self.Plan" />
+          <EntitySet Name="Suscripcions" EntityType="Self.Suscripcion" />
+          <AssociationSet Name="FK_Pago_Cliente" Association="Self.FK_Pago_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Pago" EntitySet="Pagoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_Suscripcion" Association="Self.FK_Pago_Suscripcion">
+            <End Role="Suscripcion" EntitySet="Suscripcions" />
+            <End Role="Pago" EntitySet="Pagoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Suscripcion_Plan" Association="Self.FK_Suscripcion_Plan">
+            <End Role="Plan" EntitySet="Plans" />
+            <End Role="Suscripcion" EntitySet="Suscripcions" />
+          </AssociationSet>
+          <FunctionImport Name="SPClientesConSuscripcionActivaInactiva" ReturnType="Collection(XboxGamePassModel.SPClientesConSuscripcionActivaInactiva_Result)" />
+          <FunctionImport Name="SPObtenerClientesConRenovacionAutomatica" ReturnType="Collection(XboxGamePassModel.SPObtenerClientesConRenovacionAutomatica_Result)" />
+          <FunctionImport Name="SPObtenerClientesPorPaisYPlan" ReturnType="Collection(XboxGamePassModel.SPObtenerClientesPorPaisYPlan_Result)" />
+          <FunctionImport Name="SPObtenerClientesPorPlataforma" ReturnType="Collection(XboxGamePassModel.SPObtenerClientesPorPlataforma_Result)" />
+          <FunctionImport Name="SPObtenerNumeroClientesPorPais" ReturnType="Collection(XboxGamePassModel.SPObtenerNumeroClientesPorPais_Result)" />
+          <FunctionImport Name="SPObtenerPagosPorPlan" ReturnType="Collection(XboxGamePassModel.SPObtenerPagosPorPlan_Result)">
+          <Parameter Name="NombrePlan" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SPClientesConSuscripcionActivaInactiva_Result">
+          <Property Type="Int32" Name="ClientesConSuscripcionActiva" Nullable="true" />
+          <Property Type="Int32" Name="ClientesSinSuscripcionActiva" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SPObtenerClientesConRenovacionAutomatica_Result">
+          <Property Type="Int32" Name="NumeroClientes" Nullable="true" />
+          <Property Type="Boolean" Name="RenovacionAutomatica" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SPObtenerClientesPorPaisYPlan_Result">
+          <Property Type="String" Name="Pais" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="NumeroClientes" Nullable="true" />
+          <Property Type="String" Name="NombrePlan" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="DuracionPlan" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SPObtenerClientesPorPlataforma_Result">
+          <Property Type="String" Name="Plataforma" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="NumeroClientes" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SPObtenerNumeroClientesPorPais_Result">
+          <Property Type="String" Name="Pais" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="NumeroClientes" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SPObtenerPagosPorPlan_Result">
+          <Property Type="String" Name="NombrePlan" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="NumeroPagos" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="XboxGamePassModelStoreContainer" CdmEntityContainer="XboxGamePassEntities">
+          <EntitySetMapping Name="Auditorias">
+            <EntityTypeMapping TypeName="XboxGamePassModel.Auditoria">
+              <MappingFragment StoreEntitySet="Auditoria">
+                <ScalarProperty Name="Auditoria_ID" ColumnName="Auditoria_ID" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="TablaAfectada" ColumnName="TablaAfectada" />
+                <ScalarProperty Name="Operacion" ColumnName="Operacion" />
+                <ScalarProperty Name="ID_Modificado" ColumnName="ID_Modificado" />
+                <ScalarProperty Name="DatoAntiguo" ColumnName="DatoAntiguo" />
+                <ScalarProperty Name="DatoNuevo" ColumnName="DatoNuevo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="XboxGamePassModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="Cli_Cedula" ColumnName="Cli_Cedula" />
+                <ScalarProperty Name="Cli_Nombre" ColumnName="Cli_Nombre" />
+                <ScalarProperty Name="Cli_Apellido" ColumnName="Cli_Apellido" />
+                <ScalarProperty Name="Cli_BirthDate" ColumnName="Cli_BirthDate" />
+                <ScalarProperty Name="Cli_Pais" ColumnName="Cli_Pais" />
+                <ScalarProperty Name="Cli_Email" ColumnName="Cli_Email" />
+                <ScalarProperty Name="Cli_LogicalDelete" ColumnName="Cli_LogicalDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pagoes">
+            <EntityTypeMapping TypeName="XboxGamePassModel.Pago">
+              <MappingFragment StoreEntitySet="Pago">
+                <ScalarProperty Name="Pago_ID" ColumnName="Pago_ID" />
+                <ScalarProperty Name="Pago_Codigo" ColumnName="Pago_Codigo" />
+                <ScalarProperty Name="Cli_Cedula" ColumnName="Cli_Cedula" />
+                <ScalarProperty Name="Sus_ID" ColumnName="Sus_ID" />
+                <ScalarProperty Name="Pago_Monto" ColumnName="Pago_Monto" />
+                <ScalarProperty Name="Pago_Fecha" ColumnName="Pago_Fecha" />
+                <ScalarProperty Name="Pago_Estado" ColumnName="Pago_Estado" />
+                <ScalarProperty Name="Pago_LogicalDelete" ColumnName="Pago_LogicalDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Plans">
+            <EntityTypeMapping TypeName="XboxGamePassModel.Plan">
+              <MappingFragment StoreEntitySet="Plan">
+                <ScalarProperty Name="Plan_ID" ColumnName="Plan_ID" />
+                <ScalarProperty Name="Plan_Nombre" ColumnName="Plan_Nombre" />
+                <ScalarProperty Name="Plan_Duracion" ColumnName="Plan_Duracion" />
+                <ScalarProperty Name="Plan_Precio" ColumnName="Plan_Precio" />
+                <ScalarProperty Name="Plan_Plataforma" ColumnName="Plan_Plataforma" />
+                <ScalarProperty Name="Plan_LogicalDelete" ColumnName="Plan_LogicalDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suscripcions">
+            <EntityTypeMapping TypeName="XboxGamePassModel.Suscripcion">
+              <MappingFragment StoreEntitySet="Suscripcion">
+                <ScalarProperty Name="Sus_ID" ColumnName="Sus_ID" />
+                <ScalarProperty Name="Plan_ID" ColumnName="Plan_ID" />
+                <ScalarProperty Name="Sus_StartDate" ColumnName="Sus_StartDate" />
+                <ScalarProperty Name="Sus_EndDate" ColumnName="Sus_EndDate" />
+                <ScalarProperty Name="Sus_Estado" ColumnName="Sus_Estado" />
+                <ScalarProperty Name="Sus_RenovacionAuto" ColumnName="Sus_RenovacionAuto" />
+                <ScalarProperty Name="Sus_LogicalDelete" ColumnName="Sus_LogicalDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SPClientesConSuscripcionActivaInactiva" FunctionName="XboxGamePassModel.Store.SPClientesConSuscripcionActivaInactiva">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="XboxGamePassModel.SPClientesConSuscripcionActivaInactiva_Result">
+                <ScalarProperty Name="ClientesConSuscripcionActiva" ColumnName="ClientesConSuscripcionActiva" />
+                <ScalarProperty Name="ClientesSinSuscripcionActiva" ColumnName="ClientesSinSuscripcionActiva" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPObtenerClientesConRenovacionAutomatica" FunctionName="XboxGamePassModel.Store.SPObtenerClientesConRenovacionAutomatica">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerClientesConRenovacionAutomatica_Result">
+                <ScalarProperty Name="NumeroClientes" ColumnName="NumeroClientes" />
+                <ScalarProperty Name="RenovacionAutomatica" ColumnName="RenovacionAutomatica" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPObtenerClientesPorPaisYPlan" FunctionName="XboxGamePassModel.Store.SPObtenerClientesPorPaisYPlan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerClientesPorPaisYPlan_Result">
+                <ScalarProperty Name="Pais" ColumnName="Pais" />
+                <ScalarProperty Name="NumeroClientes" ColumnName="NumeroClientes" />
+                <ScalarProperty Name="NombrePlan" ColumnName="NombrePlan" />
+                <ScalarProperty Name="DuracionPlan" ColumnName="DuracionPlan" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPObtenerClientesPorPlataforma" FunctionName="XboxGamePassModel.Store.SPObtenerClientesPorPlataforma">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerClientesPorPlataforma_Result">
+                <ScalarProperty Name="Plataforma" ColumnName="Plataforma" />
+                <ScalarProperty Name="NumeroClientes" ColumnName="NumeroClientes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPObtenerNumeroClientesPorPais" FunctionName="XboxGamePassModel.Store.SPObtenerNumeroClientesPorPais">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerNumeroClientesPorPais_Result">
+                <ScalarProperty Name="Pais" ColumnName="Pais" />
+                <ScalarProperty Name="NumeroClientes" ColumnName="NumeroClientes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPObtenerPagosPorPlan" FunctionName="XboxGamePassModel.Store.SPObtenerPagosPorPlan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="XboxGamePassModel.SPObtenerPagosPorPlan_Result">
+                <ScalarProperty Name="NombrePlan" ColumnName="NombrePlan" />
+                <ScalarProperty Name="NumeroPagos" ColumnName="NumeroPagos" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
