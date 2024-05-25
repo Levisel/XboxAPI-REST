@@ -4,17 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic
+namespace DataAccess.DTO
 {
-    public class LogicDataService
+    public class mostrarServiciosDTO
     {
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
-        public LogicDataService()
-        {
-            Nombre = "Xbox Game Pass";
-            Descripcion = "Servicio para pagar la suscripción de XboxGamePass";
-        }
     }
 }

@@ -9,13 +9,13 @@ using Logic;
 using DataAccess;
 namespace XboxGamepass_API_REST.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SuscripcionController : ApiController
     {
         LogicSuscripcion _context = new LogicSuscripcion();
 
         // GET: api/Suscripcion/Listar
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public List<Suscripcion> Listar()
         {
             return _context.Listar();
@@ -23,7 +23,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // GET: api/Suscripcion/buscarPorId/5
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public Suscripcion Listar(string id)
         {
             return _context.buscarPorId(id);
@@ -31,7 +30,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // POST: api/Suscripcion/Insertar
         [HttpPost]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public void Insertar(Suscripcion suscripcion)
         {
             _context.Insertar(suscripcion);
@@ -39,7 +37,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // PUT: api/Suscripcion/Actualizar
         [HttpPut]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public void Actualizar(Suscripcion suscripcion)
         {
             _context.Actualizar(suscripcion);
@@ -47,7 +44,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // DELETE: api/Suscripcion/Eliminar/5
         [HttpDelete]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public void Eliminar(string id)
         {
             _context.Eliminar(id);

@@ -9,13 +9,13 @@ using Logic;
 using DataAccess;
 namespace XboxGamepass_API_REST.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PagoController : ApiController
     {
         LogicPago _context = new LogicPago();
 
         // GET: api/Pago
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public List<Pago> Listar()
         {
             return _context.Listar();
@@ -23,7 +23,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         //GET: api/Pago/buscarPorId/5
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public Pago Listar(int id)
         {
             return _context.buscarPorId(id);
@@ -31,7 +30,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // POST: api/Pago/Insertar
         [HttpPost]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public void Insertar(Pago pago)
         {
             _context.Insertar(pago);
@@ -39,7 +37,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // PUT: api/Pago/Actualizar
         [HttpPut]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public void Actualizar(Pago pago)
         {
             _context.Actualizar(pago);
@@ -47,7 +44,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // DELETE: api/Pago/Eliminar/5
         [HttpDelete]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public void Eliminar(int id)
         {
             _context.Eliminar(id);

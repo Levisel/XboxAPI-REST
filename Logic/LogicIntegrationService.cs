@@ -10,23 +10,27 @@ namespace Logic
 {
     public class LogicIntegrationService
     {
-        DataIntegrationService _context = new DataIntegrationService();
-        LogicDataService service = new LogicDataService();
+        DataIntegrationService pagosDTO = new DataIntegrationService();
+        mostrarServiciosDTO serviciosDTO = new mostrarServiciosDTO();
 
-        public LogicDataService mostrarServicio()
+        public List<mostrarServiciosDTO> mostrarServiciosPXG()
         {
-            return service;
+            List<mostrarServiciosDTO> lstServicios = new List<mostrarServiciosDTO>();
+            serviciosDTO.Nombre = "Xbox Game Pass";
+            serviciosDTO.Descripcion = "Servicio para pagar la suscripción de XboxGamePass";
+            lstServicios.Add(serviciosDTO);
+            return lstServicios;
         }
 
 
-        public List<MostrarPagosPXG> mostrarPagosPXG(string cedula)
+        public List<mostrarPagosDTO> mostrarPagosPXG(string CI)
         {
-            return _context.mostrarPagosPXG(cedula);
+            return pagosDTO.mostrarPagosPXG(CI);
         }
 
-        public bool actualizarEstado(string codPago)
+        public bool actualizarEstadoPXG(string codPago)
         {
-            return _context.actualizarEstado(codPago);
+            return pagosDTO.actualizarEstadoPXG(codPago);
         }
 
     }

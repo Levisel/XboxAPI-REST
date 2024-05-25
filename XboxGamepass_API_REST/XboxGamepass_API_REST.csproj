@@ -183,6 +183,7 @@
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\PagoController.cs" />
     <Compile Include="Controllers\PlanController.cs" />
+    <Compile Include="Controllers\ServicioPXGController.cs" />
     <Compile Include="Controllers\SPController.cs" />
     <Compile Include="Controllers\SuscripcionController.cs" />
     <Compile Include="Global.asax.cs">

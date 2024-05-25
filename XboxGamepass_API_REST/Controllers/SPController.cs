@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 namespace XboxGamepass_API_REST.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SPController : ApiController
     {
         LogicSPClientesConSuscripcionActivaInactiva logicSPClientesConSuscripcionActivaInactiva = new LogicSPClientesConSuscripcionActivaInactiva();
@@ -20,7 +21,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // GET: api/SP/ListarClientesConSuscripcionActivaInactiva
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public List<SPClientesConSuscripcionActivaInactiva_Result> ListarClientesConSuscripcionActivaInactiva()
         {
             return logicSPClientesConSuscripcionActivaInactiva.Listar();
@@ -28,7 +28,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // GET: api/SP/ListarClientesConRenovacionAutomatica
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public List<SPObtenerClientesConRenovacionAutomatica_Result> ListarClientesConRenovacionAutomatica()
         {
             return logicSPObtenerClientesConRenovacionAutomatica.Listar();
@@ -36,7 +35,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // GET: api/SP/ListarClientesPorPaisYPlan
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public List<SPObtenerClientesPorPaisYPlan_Result> ListarClientesPorPaisYPlan()
         {
             return logicSPObtenerClientesPorPaisYPlan.Listar();
@@ -44,7 +42,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // GET: api/SP/ListarClientesPorPlataforma
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public List<SPObtenerClientesPorPlataforma_Result> ListarClientesPorPlataforma()
         {
             return logicSPObtenerClientesPorPlataforma.Listar();
@@ -52,7 +49,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // GET: api/SP/ListarNumeroClientesPorPais
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public List<SPObtenerNumeroClientesPorPais_Result> ListarNumeroClientesPorPais()
         {
             return logicSPObtenerNumeroClientesPorPais.Listar();

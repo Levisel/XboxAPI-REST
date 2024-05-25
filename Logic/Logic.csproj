@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogicDataService.cs" />
     <Compile Include="LogicCliente.cs" />
     <Compile Include="LogicIntegrationService.cs" />
     <Compile Include="LogicPago.cs" />

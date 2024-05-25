@@ -9,13 +9,13 @@ using Logic;
 using DataAccess;
 namespace XboxGamepass_API_REST.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PlanController : ApiController
     {
         LogicPlan _context = new LogicPlan();
 
         // GET: api/Plan/Listar
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public List<Plan> Listar()
         {
             return _context.Listar();
@@ -23,7 +23,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         //GET: api/Plan/buscarPorId/5
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public Plan Listar(int id)
         {
             return _context.buscarPorId(id);
@@ -31,7 +30,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // POST: api/Plan/Insertar
         [HttpPost]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public void Insertar(Plan plan)
         {
             _context.Insertar(plan);
@@ -39,7 +37,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // PUT: api/Plan/Actualizar
         [HttpPut]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public void Actualizar(Plan plan)
         {
             _context.Actualizar(plan);
@@ -47,7 +44,6 @@ namespace XboxGamepass_API_REST.Controllers
 
         // DELETE: api/Plan/Eliminar/5
         [HttpDelete]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public void Eliminar(int id)
         {
             _context.Eliminar(id);

@@ -59,7 +59,8 @@
     <Compile Include="Cliente.cs">
       <DependentUpon>XboxGamepassModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DTO\MostrarPagosPXG.cs" />
+    <Compile Include="DTO\mostrarPagosDTO.cs" />
+    <Compile Include="DTO\mostrarServiciosDTO.cs" />
     <Compile Include="Pago.cs">
       <DependentUpon>XboxGamepassModel.tt</DependentUpon>
     </Compile>

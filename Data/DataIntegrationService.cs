@@ -11,26 +11,23 @@ namespace Data
     public class DataIntegrationService
     {
 
-        public List<MostrarPagosPXG> mostrarPagosPXG(string cedula)
+        public List<mostrarPagosDTO> mostrarPagosPXG(string CI)
         {
             DataPago dataPago = new DataPago();
-            List<Pago> pagos = dataPago.Listar().Where(p => p.Cli_Cedula.Equals(cedula) && p.Pago_Estado.ToLower().Equals("pendiente")).ToList();
-            List<MostrarPagosPXG> lstPagosPXG = new List<MostrarPagosPXG>();
+            List<Pago> pagos = dataPago.Listar().Where(p => p.Cli_Cedula.Equals(CI) && p.Pago_Estado.ToLower().Equals("pendiente")).ToList();
+            List<mostrarPagosDTO> lstPagosPXG = new List<mostrarPagosDTO>();
 
             foreach (Pago pago in pagos)
             {
-                MostrarPagosPXG mostrarPagosPXG = new MostrarPagosPXG();
-                mostrarPagosPXG.cedula = pago.Cli_Cedula;
-                mostrarPagosPXG.cod_pago = pago.Pago_Codigo;
+                mostrarPagosDTO mostrarPagosPXG = new mostrarPagosDTO();
+                mostrarPagosPXG.codPago = pago.Pago_Codigo;
                 mostrarPagosPXG.monto = (decimal) pago.Pago_Monto;
-                mostrarPagosPXG.nServicio = "PagoXboxGamePass";
-
                 lstPagosPXG.Add(mostrarPagosPXG);
             }
             return lstPagosPXG;
         }
 
-        public bool actualizarEstado(string codPago)
+        public bool actualizarEstadoPXG(string codPago)
         {
             bool actualizado = false;
             DataPago dataPago = new DataPago();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using XboxGamepass_API_REST.Models;
 
 namespace XboxGamepass_API_REST
 {
